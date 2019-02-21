@@ -7,7 +7,7 @@
 $(document).ready(function() {
 
     function createTweetElement(tweetObj) {
-        // code to append <div> to <article>
+        // code to append <childElements> to <article>
         var $article = $("<article>").addClass("tweet");
         var $header = $("<header>").addClass("tweet-h");
         var $img = $("<img>").attr("src",tweetObj.user.avatars.small).addClass("tweeter");
@@ -46,20 +46,7 @@ $(document).ready(function() {
         return $article;
     };
 
-        
-
-    // Test / driver code (temporary). Eventually will get this from the server.
-   
     
-    
-    
-    // Test / driver code (temporary)
-     // to see what it looks like
-     // to add it to the page so we can make sure it's got all the right elements, classes, etc.
-
-
-
-
 
 // Code for Task 2: Implement renderTweets function
 // Fake data taken from tweets.json
