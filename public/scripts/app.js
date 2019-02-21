@@ -6,6 +6,8 @@
 
 $(document).ready(function() {
 
+// Implementing createTweetElement function 
+
     function createTweetElement(tweetObj) {
         // code to append <childElements> to <article>
         var $article = $("<article>").addClass("tweet");
@@ -98,7 +100,7 @@ const data = [
   }
 ];
 
-
+// Implementing renderTweets function
 
     function renderTweets(tweets) {
         for(let a = 0; a < data.length; a++) {
@@ -109,6 +111,25 @@ const data = [
     }
   
   renderTweets(data);
+
+// Submiting new tweets asynchronously using jQuery and AJAX.
+
+  $('.new-tweet').on('submit', (event) => { 
+    event.preventDefault();
+    const data = $('#tweettext').serialize();
+    console.log(data);
+  });
+
+// Fetching tweets with Ajax
+
+  function loadTweets (tweets)   {
+  $.get('/tweets', tweets => {
+
+    
+  })
+  console.log();
+  } 
+  loadTweets();
 
 
 });
