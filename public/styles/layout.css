@@ -47,6 +47,11 @@ html {
   
 
 }
+#error-message{
+  color:red;
+  font-style: bold;
+}
+
 
 
 

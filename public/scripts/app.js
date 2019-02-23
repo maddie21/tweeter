@@ -1,62 +1,4 @@
-/*
- * Client-side JS logic goes here
- * jQuery is already loaded
- * Reminder: Use (and do all your DOM work in) jQuery's document ready function
- */
-
 $(document).ready(function() {
-  // Implementing createTweetElement function
-
-  function createTweetElement(tweetObj) {
-    // code to append <childElements> to <article>
-    var $article = $("<article>").addClass("tweet");
-    var $header = $("<header>").addClass("tweet-h");
-    var $img = $("<img>")
-      .attr("src", tweetObj.user.avatars.small)
-      .addClass("tweeter");
-    $header.append($img);
-
-    var $div = $("<div>");
-    var $p1 = $("<p>")
-      .addClass("alignleft")
-      .text(tweetObj.user.name);
-    var $p2 = $("<p>")
-      .addClass("alignright username")
-      .text(tweetObj.user.handle);
-
-    $div.append($p1);
-    $div.append($p2);
-
-    $header.append($div);
-
-    $divClear = $("<div>").addClass("div-clear");
-
-    $header.append($divClear);
-    $article.append($header);
-    var $p3 = $("<p>")
-      .addClass("body-a")
-      .text(tweetObj.content.text);
-
-    $article.append($p3);
-
-    var $footer = $("<footer>")
-      .addClass("tweet-f")
-      .text(tweetObj.created_at);
-    var $1 = $("<i>").addClass("fas fa-flag");
-    var $2 = $("<i>").addClass("fas fa-retweet");
-    var $3 = $("<i>").addClass("fas fa-heart");
-
-    $footer.append($1);
-    $footer.append($2);
-    $footer.append($3);
-
-    $article = $article.append($footer);
-
-    return $article;
-  }
-
-  // Code for Task 2: Implement renderTweets function
-  // Fake data taken from tweets.json
 
   const data = [
     {
@@ -116,26 +58,12 @@ $(document).ready(function() {
     }
   ];
 
-  // Implementing renderTweets function
-
   function renderTweets(tweets) {
     for (let a = 0; a < tweets.length; a++) {
       var $tweet = createTweetElement(tweets[a]);
       $("#tweet-container").append($tweet);
     }
   }
-
-  // Submiting new tweets asynchronously using jQuery and AJAX.
-
-  // $(".new-tweet").on("submit", event => {
-  //   event.preventDefault();
-  //   const data = $("#tweettext").serialize();
-  //   console.log(data);
-  // });
-
-
-
-  // Fetching tweets with Ajax
 
   function loadTweets() {
     $.ajax("/tweets", { method: "GET" }).then(function(
@@ -146,75 +74,99 @@ $(document).ready(function() {
   }
   loadTweets();
 
-  //Validation
-
- 
 });
 
 function ValidateForm(){
   var message = document.forms["tweetMessage"]["text"].value;
       if(!message.length > 0) {
-        alert("Tweet cannot be empty");
+        $("#error-message").text("Tweet cannot be empty").show();
+        return false;
       }
       if(message.length >140) {
-          alert("Tweet exceeds limit");
+        $("#error-message").text("Tweet exceeds limit").show();
+        return false;
       }
+      return true;
     }
 
     $(() => {
-      // Augment the behavior of the submit/create form
+
       $('.new-tweet').on('submit', (event) => {
-        // Don't let it submit naturally. We will do it async!
+
         event.preventDefault();
-        // console.log('SUBMITTING');
-        // console.log(event);
-        // const data = {
-        //   name: $('#').val(),
-        //   type: $('#').val(),
-        //   damage: $('#').val(),
-        // }
-        const data = $('#tweet-form').serialize();
-        console.log('data: ', data);
-        $.post('/tweets', data)
-        .then((tweet) => {
-          const elm = createTweetElement(tweet)
-          appendTweet(elm);
-        })
+
+        if(ValidateForm() == true){
+          const message = $('#tweet-form').serialize();
+          
+          $.post('/tweets', message)
+          .then((tweet) => {
+            debugger;
+            console.log("tweet:" +tweet);
+            const elm = createTweetElement(tweet)
+            console.log(elm);
+            $(elm).prependTo('#tweet-container');
+          })
+        }
       });
-
-        const createTweetElement = function(tweet) {
-          const element = `
-          <div class="tweet">
-              ${tweet.name}
-            </div>
-          `;
-          console.log(tweet);
-          const $tweetList = $('.new-tweet');
-          $tweetList.append(element);
-        }
-
-        const createTweetElement2 = function(tweet) {
-          const element = $('<div>')
-            .addClass('creature2')
-            .text(tweet.name);
-          // console.log(element);
-          return element;
-        }
 
         const appendTweet = function(element) {
-          const $tweetList = $('.new-tweet');
+          const $tweetList = $('#tweet-container');
           $tweetList.append(element);
         }
 
-        $.getJSON('/tweets.json', (tweets, status, xhr) => {
-          // console.log(data);
-          // console.log(status);
-          // console.log(xhr);
-          for (let tweet of tweets) {
-            // console.log(creature);
-            const elm = createCreatureElement2(tweet);
-            appendCreature(elm);
-          }
-        });
-      
       });
+
+      function createTweetElement(tweetObj) {
+        debugger;
+        var $article = $("<article>").addClass("tweet");
+        var $header = $("<header>").addClass("tweet-h");
+        var $img = $("<img>")
+          .attr("src", tweetObj.user.avatars.small)
+          .addClass("tweeter");
+        $header.append($img);
+    
+        var $div = $("<div>");
+        var $p1 = $("<p>")
+          .addClass("alignleft")
+          .text(tweetObj.user.name);
+        var $p2 = $("<p>")
+          .addClass("alignright username")
+          .text(tweetObj.user.handle);
+    
+        $div.append($p1);
+        $div.append($p2);
+    
+        $header.append($div);
+    
+        $divClear = $("<div>").addClass("div-clear");
+    
+        $header.append($divClear);
+        $article.append($header);
+        var $p3 = $("<p>")
+          .addClass("body-a")
+          .text(tweetObj.content.text);
+    
+        $article.append($p3);
+    
+        var $footer = $("<footer>")
+          .addClass("tweet-f")
+          .text(tweetObj.created_at);
+        var $1 = $("<i>").addClass("fas fa-flag");
+        var $2 = $("<i>").addClass("fas fa-retweet");
+        var $3 = $("<i>").addClass("fas fa-heart");
+    
+        $footer.append($1);
+        $footer.append($2);
+        $footer.append($3);
+    
+        $article = $article.append($footer);
+    
+        return $article;
+      }
+
+
+
+      function enableTweet(){
+        $(".new-tweet").slideDown(1600);
+        $("#tweettext").select();
+      }
