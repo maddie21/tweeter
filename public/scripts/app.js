@@ -115,7 +115,7 @@ function ValidateForm(){
         }
 
       });
-
+// Function to append child elements with the parent element 
       function createTweetElement(tweetObj) {
         debugger;
         var $article = $("<article>").addClass("tweet");
@@ -164,9 +164,9 @@ function ValidateForm(){
         return $article;
       }
 
-
+// Fuction to enable toggle and slide 
 
       function enableTweet(){
-        $(".new-tweet").slideDown(1600);
+        $(".new-tweet").slideDown(400);
         $("#tweettext").select();
       }
