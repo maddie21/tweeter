@@ -11,6 +11,13 @@ This repository is the starter code for the project: Students will fork and clon
 3. Start the web server using the `npm run local` command. The app will be served at <http://localhost:8080/>.
 4. Go to <http://localhost:8080/> in your browser.
 
+## Final Product 
+
+!["Screenshot of tweet-box"](https://github.com/maddie21/tweeter/blob/master/docs/tweet-box.png?raw=true)
+!["Screenshot of tweets"](https://github.com/maddie21/tweeter/blob/master/docs/tweets.png?raw=true)
+!["Screenshot of Compose tweet-box"](https://github.com/maddie21/tweeter/blob/master/docs/Compose%20tweet-box.png?raw=true)
+
+
 ## Dependencies
 
 - Express
