@@ -37,14 +37,19 @@ html {
 
   #nav-bar #Compose-button{
     float: right;
-    font-size : 80%;
+    font-size : 120%;
+    font-weight: 500;
+    text-decoration-color: #057866; 
     font-style: bold;
     padding : 15px;
+    margin-top: 15px;
     size: 100%;
     border-radius: 6px;
-    
-    
-   
-  }
+    }
+
+    #nav-bar #Compose-button:hover {
+      filter: brightness(95%);
+      color: #aaebe1;
+    }
   
 

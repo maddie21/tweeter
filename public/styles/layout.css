@@ -39,7 +39,7 @@ html {
 }
 .container {
   width: 450px;
-  height: 100%;
+  height: auto;
   background-color: white;
   margin-left: auto;
   margin-right: auto;

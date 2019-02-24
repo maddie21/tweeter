@@ -100,7 +100,7 @@ function ValidateForm(){
           
           $.post('/tweets', message)
           .then((tweet) => {
-            debugger;
+            
             console.log("tweet:" +tweet);
             const elm = createTweetElement(tweet)
             console.log(elm);
@@ -117,7 +117,7 @@ function ValidateForm(){
       });
 // Function to append child elements with the parent element 
       function createTweetElement(tweetObj) {
-        debugger;
+       
         var $article = $("<article>").addClass("tweet");
         var $header = $("<header>").addClass("tweet-h");
         var $img = $("<img>")
@@ -167,6 +167,6 @@ function ValidateForm(){
 // Fuction to enable toggle and slide 
 
       function enableTweet(){
-        $(".new-tweet").slideDown(400);
+        $(".new-tweet").slideToggle();
         $("#tweettext").select();
       }

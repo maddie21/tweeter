@@ -7,8 +7,8 @@ html {
 }
 
 section.new-tweet {
-  padding-left:2em;
-  padding-right:2em;
+  padding-left:1em;
+  padding-right:1em;
   background-color: rgb(211, 208, 208);
   margin-left: 28px;
   margin-right: 28px;
@@ -19,6 +19,8 @@ section.new-tweet {
 
 h2 {
   width:100%;
+  padding-top: 15px;
+  border-bottom: 1px solid black;
   
   
 }
@@ -43,6 +45,7 @@ article {
 
   border: 1px solid rgb(161, 157, 157);
   border-radius: 6px; 
+  margin-bottom: 15px;
 }
 
 img {
@@ -116,6 +119,16 @@ article.tweet:hover footer i {
   clear: both;
 }
 
+input {
+  margin-bottom: 20px;
+  margin-top: 2px;
+}
 
+main.containter {
+  display: flex;
+  flex-flow: column;
+
+ 
+}
 
   
