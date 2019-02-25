@@ -1,172 +1,114 @@
 $(document).ready(function() {
+  $(".new-tweet").on("submit", event => {
+    event.preventDefault();
 
-  const data = [
-    {
-      user: {
-        name: "Newton",
-        avatars: {
-          small:
-            "https://vanillicon.com/788e533873e80d2002fa14e1412b4188_50.png",
-          regular:
-            "https://vanillicon.com/788e533873e80d2002fa14e1412b4188.png",
-          large:
-            "https://vanillicon.com/788e533873e80d2002fa14e1412b4188_200.png"
-        },
-        handle: "@SirIsaac"
-      },
-      content: {
-        text:
-          "If I have seen further it is by standing on the shoulders of giants"
-      },
-      created_at: 1461116232227
-    },
-    {
-      user: {
-        name: "Descartes",
-        avatars: {
-          small:
-            "https://vanillicon.com/7b89b0d8280b93e2ba68841436c0bebc_50.png",
-          regular:
-            "https://vanillicon.com/7b89b0d8280b93e2ba68841436c0bebc.png",
-          large:
-            "https://vanillicon.com/7b89b0d8280b93e2ba68841436c0bebc_200.png"
-        },
-        handle: "@rd"
-      },
-      content: {
-        text: "Je pense , donc je suis"
-      },
-      created_at: 1461113959088
-    },
-    {
-      user: {
-        name: "Johann von Goethe",
-        avatars: {
-          small:
-            "https://vanillicon.com/d55cf8e18b47d4baaf60c006a0de39e1_50.png",
-          regular:
-            "https://vanillicon.com/d55cf8e18b47d4baaf60c006a0de39e1.png",
-          large:
-            "https://vanillicon.com/d55cf8e18b47d4baaf60c006a0de39e1_200.png"
-        },
-        handle: "@johann49"
-      },
-      content: {
-        text: "Es ist nichts schrecklicher als eine tätige Unwissenheit."
-      },
-      created_at: 1461113796368
+    if (ValidateForm() == true) {
+      const message = $("#tweet-form").serialize();
+// The call below is posting tweets to the database and also displays the new tweet.
+      $.post("/tweets", message).then(tweet => {
+        const elm = createTweetElement(tweet);
+        $(elm).prependTo("#tweet-container");
+      });
     }
-  ];
-
-  function renderTweets(tweets) {
-    for (let a = 0; a < tweets.length; a++) {
-      var $tweet = createTweetElement(tweets[a]);
-      $("#tweet-container").append($tweet);
-    }
-  }
-
-  function loadTweets() {
-    $.ajax("/tweets", { method: "GET" }).then(function(
-      returnData
-    ) {
-      renderTweets(returnData);
-    });
-  }
-  loadTweets();
-
+  });
 });
+// Function to append child elements with the parent element
+function createTweetElement(tweetObj) {
+  var $article = $("<article>").addClass("tweet");
+  var $header = $("<header>").addClass("tweet-h");
+  var $img = $("<img>")
+    .attr("src", tweetObj.user.avatars.small)
+    .addClass("tweeter");
+  $header.append($img);
 
-function ValidateForm(){
+  var $div = $("<div>");
+  var $p1 = $("<p>")
+    .addClass("alignleft")
+    .text(tweetObj.user.name);
+  var $p2 = $("<p>")
+    .addClass("alignright username")
+    .text(tweetObj.user.handle);
+
+  $div.append($p1);
+  $div.append($p2);
+
+  $header.append($div);
+
+  $divClear = $("<div>").addClass("div-clear");
+
+  $header.append($divClear);
+  $article.append($header);
+  var $p3 = $("<p>")
+    .addClass("body-a")
+    .text(tweetObj.content.text);
+
+  $article.append($p3);
+
+  var $footer = $("<footer>")
+    .addClass("tweet-f")
+    .text(convertMiliseconds(tweetObj.created_at) + " days ago");
+  var $1 = $("<i>").addClass("fas fa-flag");
+  var $2 = $("<i>").addClass("fas fa-retweet");
+  var $3 = $("<i>").addClass("fas fa-heart");
+
+  $footer.append($1);
+  $footer.append($2);
+  $footer.append($3);
+
+  $article = $article.append($footer);
+
+  return $article;
+}
+
+//The below function renders tweets to the database
+function renderTweets(tweets) {
+  for (let a = 0; a < tweets.length; a++) {
+    var $tweet = createTweetElement(tweets[a]);
+    $("#tweet-container").append($tweet);
+  }
+}
+
+//Loads the tweets from database and displays it on the UI/Website
+function loadTweets() {
+  $.ajax("/tweets", { method: "GET" }).then(function(returnData) {
+    renderTweets(returnData);
+  });
+}
+loadTweets();
+
+//Validates the input
+function ValidateForm() {
   var message = document.forms["tweetMessage"]["text"].value;
-      if(!message.length > 0) {
-        $("#error-message").text("Tweet cannot be empty").show();
-        return false;
-      }
-      if(message.length >140) {
-        $("#error-message").text("Tweet exceeds limit").show();
-        return false;
-      }
-      return true;
-    }
+  if (!message.length > 0) {
+    $("#error-message")
+      .text("Tweet cannot be empty")
+      .show();
+    return false;
+  }
+  if (message.length > 140) {
+    $("#error-message")
+      .text("Tweet exceeds limit")
+      .show();
+    return false;
+  }
+  return true;
+}
 
-    $(() => {
+// The below function converts milliseconds to days
 
-      $('.new-tweet').on('submit', (event) => {
+function convertMiliseconds(miliseconds, format) {
+  var days, hours, minutes, seconds, total_hours, total_minutes, total_seconds;
 
-        event.preventDefault();
+  total_seconds = parseInt(Math.floor(miliseconds / 1000));
+  total_minutes = parseInt(Math.floor(total_seconds / 60));
+  total_hours = parseInt(Math.floor(total_minutes / 60));
+  days = parseInt(Math.floor(total_hours / 24));
+  return days;
+}
 
-        if(ValidateForm() == true){
-          const message = $('#tweet-form').serialize();
-          
-          $.post('/tweets', message)
-          .then((tweet) => {
-            
-            console.log("tweet:" +tweet);
-            const elm = createTweetElement(tweet)
-            console.log(elm);
-            $(elm).prependTo('#tweet-container');
-          })
-        }
-      });
+// Fuction to enable toggle and slide
 
-        const appendTweet = function(element) {
-          const $tweetList = $('#tweet-container');
-          $tweetList.append(element);
-        }
-
-      });
-// Function to append child elements with the parent element 
-      function createTweetElement(tweetObj) {
-       
-        var $article = $("<article>").addClass("tweet");
-        var $header = $("<header>").addClass("tweet-h");
-        var $img = $("<img>")
-          .attr("src", tweetObj.user.avatars.small)
-          .addClass("tweeter");
-        $header.append($img);
-    
-        var $div = $("<div>");
-        var $p1 = $("<p>")
-          .addClass("alignleft")
-          .text(tweetObj.user.name);
-        var $p2 = $("<p>")
-          .addClass("alignright username")
-          .text(tweetObj.user.handle);
-    
-        $div.append($p1);
-        $div.append($p2);
-    
-        $header.append($div);
-    
-        $divClear = $("<div>").addClass("div-clear");
-    
-        $header.append($divClear);
-        $article.append($header);
-        var $p3 = $("<p>")
-          .addClass("body-a")
-          .text(tweetObj.content.text);
-    
-        $article.append($p3);
-    
-        var $footer = $("<footer>")
-          .addClass("tweet-f")
-          .text(tweetObj.created_at);
-        var $1 = $("<i>").addClass("fas fa-flag");
-        var $2 = $("<i>").addClass("fas fa-retweet");
-        var $3 = $("<i>").addClass("fas fa-heart");
-    
-        $footer.append($1);
-        $footer.append($2);
-        $footer.append($3);
-    
-        $article = $article.append($footer);
-    
-        return $article;
-      }
-
-// Fuction to enable toggle and slide 
-
-      function enableTweet(){
-        $(".new-tweet").slideToggle();
-        $("#tweettext").select();
-      }
+function enableTweet() {
+  $(".new-tweet").slideToggle();
+  $("#tweettext").select();
+}
