@@ -20,5 +20,11 @@ This repository is the starter code for the project: Students will fork and clon
 
 ## Dependencies
 
+- HTML
+- CSS 
+- JS 
+- jQuery 
+- AJAX
 - Express
 - Node 5.10.x or above
+- MongoDB
